@@ -54,10 +54,18 @@ int main() {
         scanf("%d", &at[i]);
     }
 
-    compt[0] = bt[0] + at[0];
+    // Assuming processes are sorted by arrival time
+    if (at[0] > 0)
+        compt[0] = bt[0] + at[0];
+    else
+        compt[0] = bt[0];
 
-    for (i = 1; i < n; i++)
-        compt[i] = bt[i] + compt[i - 1];
+    for (i = 1; i < n; i++) {
+        if (compt[i - 1] < at[i])
+            compt[i] = at[i] + bt[i];  // CPU idle time
+        else
+            compt[i] = compt[i - 1] + bt[i];
+    }
 
     for (i = 0; i < n; i++) {
         tat[i] = compt[i] - at[i];
