@@ -1,65 +1,83 @@
-EXPERIMENT NO:-5
+# Experiment No: 5
 
-AIM: - Write a program to implement CPU Scheduling algorithms like FCFS &amp; SJF.
-THEORY:-
-1. FIRST-COME, FIRST-SERVE SCHEDULING (FCFS):
-In this, which process enter the ready queue first is served first. The OS maintains DS that is
-ready queue. It is the simplest CPU scheduling algorithm. If a process request the CPU then it is
-loaded into the ready queue, which process is the head of the ready queue, connect the CPU to
-that process.
-Algorithm for FCFS scheduling:
-Step 1: Start the process
-Step 2: Accept the number of processes in the ready Queue
-Step 3: For each process in the ready Q, assign the process id and accept the CPU burst time
-Step 4: Set the waiting of the first process as ‘0’ and its burst time as its turn around time
-Step 5: for each process in the Ready Q calculate
-(c) Waiting time for process(n)=waiting time of process (n-1) + Bursttime of process(n-1)
-(d) Turn around time for Process(n)= waiting time of Process(n)+ Burst time for process(n)
-Step 6: Calculate
-(e) Average waiting time = Total waiting Time / Number of process
-(f) Average Turnaround time = Total Turnaround Time / Number of process
-Step 7: Stop the process
-/* Program to Simulate First Come First Serve CPU Scheduling Algorithm */
-#include&lt;stdio.h&gt;
-#include&lt;string.h&gt;
-int main()
-{
-int i,j,n,bt[10],compt[10],at[10], wt[10],tat[10];
-float sumwt=0.0,sumtat=0.0,avgwt,avgtat;
-printf(&quot;Enter number of processes: &quot;);
-scanf(&quot;%d&quot;,&amp;n);
-printf(&quot;Enter the burst time of %d process\n&quot;, n);
-for(i=0;i&lt;n;i++)
-{
-scanf(&quot;%d&quot;,&amp;bt[i]);
-}
-printf(&quot;Enter the arrival time of %d process\n&quot;, n);
-for(i=0;i&lt;n;i++)
-{
-scanf(&quot;%d&quot;,&amp;at[i]);
-}
-compt[0]=bt[0]-at[0];
+## Aim:
+Write a program to implement CPU Scheduling algorithms like **FCFS** (First-Come, First-Serve).
 
-for(i=1;i&lt;n;i++)
-compt[i]=bt[i]+compt[i-1];
-for(i=0;i&lt;n;i++)
-{
-tat[i]=compt[i]-at[i];
-wt[i]=tat[i]-bt[i];
-sumtat+=tat[i];
-sumwt+=wt[i];
-}
-avgwt=sumwt/n;
-avgtat=sumtat/n;
-printf(&quot;----------------------------------\n&quot;);
-printf(&quot;PN\tBt\tCt\tTat\tWt\n&quot;);
-printf(&quot;----------------------------------\n&quot;);
-for(i=0;i&lt;n;i++)
-{
-printf(&quot;%d\t%2d\t%2d\t%2d\t%2d\n&quot;,i,bt[i],compt[i],tat[i],wt[i]);
-}
-printf(&quot;----------------------------------\n&quot;);
-printf(&quot; Avgwt = %.2f\tAvgtat = %.2f\n&quot;,avgwt,avgtat);
-printf(&quot;-----------------------------------\n&quot;);
-return 0;
+---
+
+## Theory:
+
+### 1. First-Come, First-Serve Scheduling (FCFS):
+FCFS is the simplest CPU scheduling algorithm. In this method, the process that enters the **ready queue** first is assigned the CPU first. The operating system maintains a data structure (typically a queue) to manage the order of execution.
+
+Whenever a process requests the CPU, it is added to the ready queue. The process at the **head** of the queue is selected for execution.
+
+---
+
+## Algorithm for FCFS Scheduling:
+
+1. Start the process.
+2. Accept the number of processes in the ready queue.
+3. For each process in the ready queue:
+   - Assign the process ID.
+   - Accept the CPU burst time.
+4. Set the waiting time of the first process to `0` and its burst time as its turnaround time.
+5. For each process in the queue, calculate:
+   - Waiting Time = Waiting time of previous process + Burst time of previous process.
+   - Turnaround Time = Waiting time + Burst time.
+6. Calculate:
+   - Average Waiting Time = Total waiting time / Number of processes.
+   - Average Turnaround Time = Total turnaround time / Number of processes.
+7. Stop the process.
+
+---
+
+## FCFS Scheduling Program (C Language):
+
+```c
+#include <stdio.h>
+
+int main() {
+    int i, j, n, bt[10], compt[10], at[10], wt[10], tat[10];
+    float sumwt = 0.0, sumtat = 0.0, avgwt, avgtat;
+
+    printf("Enter number of processes: ");
+    scanf("%d", &n);
+
+    printf("Enter the burst time of %d process(es):\n", n);
+    for (i = 0; i < n; i++) {
+        scanf("%d", &bt[i]);
+    }
+
+    printf("Enter the arrival time of %d process(es):\n", n);
+    for (i = 0; i < n; i++) {
+        scanf("%d", &at[i]);
+    }
+
+    compt[0] = bt[0] + at[0];
+
+    for (i = 1; i < n; i++)
+        compt[i] = bt[i] + compt[i - 1];
+
+    for (i = 0; i < n; i++) {
+        tat[i] = compt[i] - at[i];
+        wt[i] = tat[i] - bt[i];
+        sumtat += tat[i];
+        sumwt += wt[i];
+    }
+
+    avgwt = sumwt / n;
+    avgtat = sumtat / n;
+
+    printf("----------------------------------\n");
+    printf("PN\tBT\tCT\tTAT\tWT\n");
+    printf("----------------------------------\n");
+    for (i = 0; i < n; i++) {
+        printf("%d\t%d\t%d\t%d\t%d\n", i, bt[i], compt[i], tat[i], wt[i]);
+    }
+    printf("----------------------------------\n");
+    printf("Average WT = %.2f\tAverage TAT = %.2f\n", avgwt, avgtat);
+    printf("----------------------------------\n");
+
+    return 0;
 }
